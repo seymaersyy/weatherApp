@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAVA DURUMU</title>
+    <link rel="stylesheet" href="style.css"><!--rel bağlantının css'işaret ettiğini belirtir,href yol belirtir.-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'> <!--Bu satır icon eklemek için -->
+</head>
+<body>
+    <div class="wrapper"><!--Bu bizim genel classımız wrapper kısmı da ortada çıkacak olan kare kısmın tamamını ifade ediyor.-->
+        <header><i class="bx bx-left-arrow-alt"></i> Hava Durumu</header><!--sol ok iconu ekledim.Önceki sayfaya geçişi ifade eder-->
+        <section class="input-part"> <!--Giriş Kısmı-->
+            <p class="info-txt"></p><!--Bilgi Metni-->
+            <input type="text" placeholder="şehir" spellcheck="false" required><!--spellcheck gramer kontrolü(yazım denetmi)dir. Burda yazım denetimi istemedim.Required ise bu alanın doldurulmasının zorunlu olduğunu belirtir.-->
+            <div class="seperator"></div><!--Alt kısımla ayırmak için seperator ayırıcı demek zaten-->
+            <button>Konumu Belirle</button>
+        </section>
+        <!--WEATHER PART-->
+        <section class="weather-part"> <!--Hava durumu kısmı-->
+            <img src="icons/clear.svg" alt="Weather Icon"><!--hava durumu görseli-->
+            <div class="temp">
+                <span class="number">32</span>
+                <span class="deg">°</span>C
+            </div>
+            <div class="weather">Sunny</div> <!--misal hava güneşli diye belirtilen konum-->
+            <div class="location"> <!--Konumun belirtildiği kısım-->
+                <i class="bx bx-map"></i>
+                <span>Muğla, Turkey</span>
+            </div>
+            <div class="bottom-details">
+                <div class="column feels">
+                    <i class="bx bxs-thermometer"></i>
+                    <div class="details">
+                        <div class="temp">
+                            <span class="number-2">37</span>
+                            <span class="deg">°</span>C
+                        </div>
+                        <p>Feels like</p>
+                    </div>
+                </div>    
+                <div class="column humidity">
+                    <i class="bx bxs-droplet-half"></i>
+                    <div class="details">
+                        <span>73%</span>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
