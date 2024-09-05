@@ -3,6 +3,8 @@ inputPart = wrapper.querySelector(".input-part"), /* Burada inputPart ı wrapper
 infoTxt = inputPart.querySelector(".info-txt"), /* infoTxt yi inputParttan çektim*/
 inputField = inputPart.querySelector("input"),
 locationBtn = inputPart.querySelector("button")
+wIcon = document.querySelector(".weather-part img")
+arrowBack = document.querySelector("header i ")
 let api;
 
 inputField.addEventListener("keyup", e => {  /* eneter a basıldığında bir sonraki aşamaya geçer. Burada bir e fonksiyonu yaptım  */
@@ -23,7 +25,7 @@ locationBtn.addEventListener("click" , ()=>{
 
 function onSuccess(position){ /*Bilgiler Doğruysa */
     const {latitude, longitude} = position.coords;/*apinin içine atacağımız bilgiyi çekiyoruz. Cihazdan koordinat bilgilerini çektik.*/
-    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=c827e509ebbf1aced58ca226843c8c5e`  /*Çektiğimiz bilgileri apiye gönderdik. Latitude ve longitude bilgilerini dinamik olarak aldık. */
+    api = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=c827e509ebbf1aced58ca226843c8c5e`  /*Çektiğimiz bilgileri apiye gönderdik. Latitude ve longitude bilgilerini dinamik olarak aldık. */
     fetchData()
 }
 
@@ -33,7 +35,7 @@ function onError(error){ /*Hata durumunda */
 }
 
 function requestApi(city){ /* Bu fonksiyon ile konsola şehir ismi dönüyor. */
-   api =  `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=c827e509ebbf1aced58ca226843c8c5e`; /*Burda openweather dan alacağımız bilgileri api ile bağladım.Burda city name i js nin içinden dinamik olarak çekicem.Bunu ${city} ile yaptım.apikey i de ekledim*/
+   api =  `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=c827e509ebbf1aced58ca226843c8c5e`; /*Burda openweather dan alacağımız bilgileri api ile bağladım.Burda city name i js nin içinden dinamik olarak çekicem.Bunu ${city} ile yaptım.apikey i de ekledim*/
    fetchData()
 }
 
@@ -44,6 +46,46 @@ function fetchData(){
 }
 
 function weatherDetails(info){
-    console.log(info)
+    if(info.cod == "404"){
+        infoTxt.classList.replace("pending","error")
+        infoTxt.innerText = `${inputField.value} şehri bulunamadı !`
+    }else{
+        /*weatherDetails kısmını apiye bağlayıp, hava durumu bilgilerini apiden çekicez. Apinin istediği bazı bilgiler: */
+        /*consoledaki bilgilerin olduğu yere göre alıyoruz örn info.name name de şehir ismi yazılıydı */
+        const city = info.name
+        const country = info.sys.country
+        const {description, id} = info.weather[0]
+        const {feels_like , humidity ,temp} = info.main 
+
+        if(id == 800){
+            wIcon.src = "icons/clear.svg"
+        }else if(id => 200 && id <= 232){
+            wIcon.src = "icons/storm.svg"
+        }else if(id => 600 && id <= 622){
+            wIcon.src = "icons/snow.svg"
+        }else if(id => 801 && id <= 804){
+            wIcon.src = "icons/cloud.svg"
+        }else if(id => 701 && id <= 781){
+            wIcon.src = "icons/haze.svg"
+        }else if((id =>300 && id <=321) || (id => 500 && id <= 531)){
+            wIcon.src = "icons/rain.svg"
+        }
+
+        wrapper.querySelector(".temp .number").innerText = Math.round(temp) /*wrapperın altındaki tempin altındaki number a temp i atıyoruz.  */
+        wrapper.querySelector(".weather").innerText = description
+        wrapper.querySelector(".location").innerText = `${city}, ${country}`
+        wrapper.querySelector(".temp .number-2").innerText = Math.round(feels_like)
+        wrapper.querySelector(".humidity span").innerText = `${humidity}%`
+        
+        infoTxt.classList.remove("pending", "error")
+        wrapper.classList.add("active")
+    }
+    
 }
+
+arrowBack.addEventListener("click" , () => {
+    wrapper.classList.remove("active")
+    document.getElementById('myInput').value = '';
+})
+
 
